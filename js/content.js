@@ -1,3 +1,7 @@
+const notiBlock = document.createElement("div");
+notiBlock.id = 'jtclipper-noti-block'
+document.body.appendChild(notiBlock);
+
 document.addEventListener('keydown', function (event) {
         if ((event.ctrlKey || event.metaKey) && event.code === 'KeyC') {
             if (!window.getSelection() || window.getSelection().toString().length === 0) {
@@ -9,7 +13,13 @@ document.addEventListener('keydown', function (event) {
 
                 navigator.clipboard.writeText(res)
                     .then(function () {
-                        console.log(`Task information successfully copied to clipboard with text: ${res}`)
+                        console.log(`Task information successfully copied to clipboard with text: ${res}`);
+                        notiBlock.textContent = `Сopied to clipboard: ${res}`;
+                        notiBlock.style.display = 'block';
+
+                        setTimeout(()=> {
+                            notiBlock.style.display = 'none';
+                        }, 3000)
                     })
                     .catch(function (err) {
                         console.error('Error copying task information: ', err)
