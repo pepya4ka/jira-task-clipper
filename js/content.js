@@ -29,7 +29,7 @@ function getTaskNumber() {
 
     const taskNumbers = [taskNumberFromQuerySelector, taskNumberFromPath, taskNumberFromQueryParams]
         .map(fn => fn())
-        .map(taskNumber => taskNumber.trim())
+        .map(taskNumber => taskNumber?.trim())
     return taskNumbers.find(taskNumber => taskNumber !== '')
 }
 
@@ -39,6 +39,6 @@ function getTaskTitle() {
 
     const taskTitles = [taskTitleFromQuerySelector, taskTitleFromH1Tag]
         .map(fn => fn())
-        .map(taskTitle => taskTitle.trim())
+        .map(taskTitle => taskTitle?.trim())
     return taskTitles.find(taskTitle => taskTitle !== '')
 }
