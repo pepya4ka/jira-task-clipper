@@ -12,6 +12,7 @@
     {
       "matches": [
         "<all_urls>"
+        "https://*/jira*"
       ],
       "js": [
         "js/content.js"
