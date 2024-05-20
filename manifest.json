@@ -1,0 +1,27 @@
+{
+  "manifest_version": 3,
+  "name": "Jira task clipper",
+  "version": "0.0.1",
+  "description": "Simplify your workflow with JiraTaskClipper, the ultimate browser extension for quickly copying task numbers and titles from Jira",
+  "action": {
+    "default_popup": "html/popup.html"
+  },
+  "icons": {
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "js/content.js"
+      ]
+    }
+  ],
+  "permissions": [
+    "storage"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ]
+}
