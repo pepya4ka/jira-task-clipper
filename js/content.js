@@ -9,9 +9,9 @@ document.addEventListener('keydown', function (event) {
                 const taskNumber = getTaskNumber()
                 const taskTitle = getTaskTitle()
 
-                const res = `${taskNumber} ${taskTitle}`
-
-                navigator.clipboard.writeText(res)
+                const res = [taskNumber, taskTitle].join(' ')
+                if (res.trim() !== '') {
+                    navigator.clipboard.writeText(res)
                     .then(function () {
                         console.log(`Task information successfully copied to clipboard with text: ${res}`);
                         notiBlock.textContent = `Сopied to clipboard: ${res}`;
@@ -24,6 +24,7 @@ document.addEventListener('keydown', function (event) {
                     .catch(function (err) {
                         console.error('Error copying task information: ', err)
                     })
+                }
             }
         }
     }
