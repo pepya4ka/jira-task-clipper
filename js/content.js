@@ -1,6 +1,6 @@
-const notiBlock = document.createElement("div");
-notiBlock.id = 'jtclipper-noti-block'
-document.body.appendChild(notiBlock);
+const notificationBlock = document.createElement("div");
+notificationBlock.id = 'jtclipper-noti-block'
+document.body.appendChild(notificationBlock);
 
 document.addEventListener('keydown', function (event) {
         if ((event.ctrlKey || event.metaKey) && event.code === 'KeyC') {
@@ -14,11 +14,11 @@ document.addEventListener('keydown', function (event) {
                     navigator.clipboard.writeText(res)
                     .then(function () {
                         console.log(`Task information successfully copied to clipboard with text: ${res}`);
-                        notiBlock.textContent = `Сopied to clipboard: ${res}`;
-                        notiBlock.style.display = 'block';
+                        notificationBlock.textContent = `Copied to clipboard: ${res}`;
+                        notificationBlock.style.display = 'block';
 
                         setTimeout(()=> {
-                            notiBlock.style.display = 'none';
+                            notificationBlock.style.display = 'none';
                         }, 3000)
                     })
                     .catch(function (err) {
@@ -38,11 +38,9 @@ function getTaskNumber() {
 
     const taskNumberFromQueryParams = new URL(window.location.href).searchParams.get('selectedIssue');
 
-    const taskNumbers = [taskNumberFromQuerySelector, taskNumberFromPath, taskNumberFromQueryParams]
+    return [taskNumberFromQuerySelector, taskNumberFromPath, taskNumberFromQueryParams]
         .map(taskNumber => taskNumber?.trim())
-        .filter(taskNumber => !!taskNumber);
-
-    return taskNumbers[0] || null;
+        .find(taskNumber => !!taskNumber)
 }
 
 function getTaskTitle() {
@@ -50,9 +48,7 @@ function getTaskTitle() {
     const taskTitleFromDataAtr = document.querySelector('[data-testid="issue.views.issue-base.foundation.summary.heading"]');
     const taskTitleFromH1Tag = document.querySelector('h1');
 
-    const taskTitles = [taskTitleFromQuerySelector, taskTitleFromDataAtr, taskTitleFromH1Tag]
+    return [taskTitleFromQuerySelector, taskTitleFromDataAtr, taskTitleFromH1Tag]
         .map(taskTitle => taskTitle?.innerText?.trim())
-        .filter(taskTitle => !!taskTitle);
-
-    return taskTitles[0] || null;
+        .find(taskTitle => !!taskTitle);
 }
