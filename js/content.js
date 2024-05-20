@@ -20,25 +20,29 @@ document.addEventListener('keydown', function (event) {
 )
 
 function getTaskNumber() {
-    const taskNumberFromQuerySelector = () => document.querySelector('#key-val').innerText
-    const taskNumberFromPath = () => {
-        const regex = /\/browse\/([A-Z]+-\d+)/
-        return window.location.href.match(regex)[1]
-    }
-    const taskNumberFromQueryParams = () => new URL(window.location.href).searchParams.get('selectedIssue')
+    const taskNumberFromQuerySelector = document.querySelector('#key-val')?.innerText;
+
+    const regex = /\/browse\/([A-Z]+-\d+)/;
+    const match = window.location.href.match(regex);
+    const taskNumberFromPath = match ? match[1] : null;
+
+    const taskNumberFromQueryParams = new URL(window.location.href).searchParams.get('selectedIssue');
 
     const taskNumbers = [taskNumberFromQuerySelector, taskNumberFromPath, taskNumberFromQueryParams]
-        .map(fn => fn())
         .map(taskNumber => taskNumber?.trim())
-    return taskNumbers.find(taskNumber => taskNumber !== '')
+        .filter(taskNumber => taskNumber);
+
+    return taskNumbers[0] || null;
 }
 
 function getTaskTitle() {
-    const taskTitleFromQuerySelector = () => document.querySelector('#summary-val').innerText
-    const taskTitleFromH1Tag = () => document.getElementsByTagName('h1')[0]?.innerText
+    const taskTitleFromQuerySelector = document.querySelector('#summary-val');
+    const taskTitleFromDataAtr = document.querySelector('[data-testid="issue.views.issue-base.foundation.summary.heading"]');
+    const taskTitleFromH1Tag = document.querySelector('h1');
 
-    const taskTitles = [taskTitleFromQuerySelector, taskTitleFromH1Tag]
-        .map(fn => fn())
-        .map(taskTitle => taskTitle?.trim())
-    return taskTitles.find(taskTitle => taskTitle !== '')
+    const taskTitles = [taskTitleFromQuerySelector, taskTitleFromDataAtr, taskTitleFromH1Tag]
+        .map(taskTitle => taskTitle?.innerText?.trim())
+        .filter(taskTitle => !!taskTitle);
+
+    return taskTitles[0] || null;
 }
