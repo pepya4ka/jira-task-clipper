@@ -1,0 +1,15 @@
+#jtclipper-noti-block {
+    display: none;
+    position: absolute;
+    z-index: 9999;
+    border-radius: 6px;
+    bottom: 60px;
+    left: 60px;
+    padding: 8px;
+    font-size: 14px;
+    line-height: 18px;
+    background-color: rgba(60, 65, 80, 0.8);
+    color: white;
+    max-width: 300px;
+    height: auto;
+}

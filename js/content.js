@@ -1,3 +1,7 @@
+const notiBlock = document.createElement("div");
+notiBlock.id = 'jtclipper-noti-block'
+document.body.appendChild(notiBlock);
+
 document.addEventListener('keydown', function (event) {
         if ((event.ctrlKey || event.metaKey) && event.code === 'KeyC') {
             if (!window.getSelection() || window.getSelection().toString().length === 0) {
@@ -8,12 +12,18 @@ document.addEventListener('keydown', function (event) {
                 const res = [taskNumber, taskTitle].join(' ')
                 if (res.trim() !== '') {
                     navigator.clipboard.writeText(res)
-                        .then(function () {
-                            console.log(`Task information successfully copied to clipboard with text: ${res}`)
-                        })
-                        .catch(function (err) {
-                            console.error('Error copying task information: ', err)
-                        })
+                    .then(function () {
+                        console.log(`Task information successfully copied to clipboard with text: ${res}`);
+                        notiBlock.textContent = `Сopied to clipboard: ${res}`;
+                        notiBlock.style.display = 'block';
+
+                        setTimeout(()=> {
+                            notiBlock.style.display = 'none';
+                        }, 3000)
+                    })
+                    .catch(function (err) {
+                        console.error('Error copying task information: ', err)
+                    })
                 }
             }
         }
@@ -21,25 +31,28 @@ document.addEventListener('keydown', function (event) {
 )
 
 function getTaskNumber() {
-    const taskNumberFromQuerySelector = () => document.querySelector('#key-val')?.innerText
-    const taskNumberFromPath = () => {
-        const regex = /\/browse\/([A-Z]+-\d+)/
-        return window.location.href.match(regex)?.[1]
-    }
-    const taskNumberFromQueryParams = () => new URL(window.location.href).searchParams.get('selectedIssue')
+    const taskNumberFromQuerySelector = document.querySelector('#key-val')?.innerText;
+
+    const regex = /\/browse\/([A-Z]+-\d+)/;
+    const taskNumberFromPath = window.location.href.match(regex)?.[1];
+
+    const taskNumberFromQueryParams = new URL(window.location.href).searchParams.get('selectedIssue');
 
     const taskNumbers = [taskNumberFromQuerySelector, taskNumberFromPath, taskNumberFromQueryParams]
-        .map(fn => fn())
         .map(taskNumber => taskNumber?.trim())
-    return taskNumbers.find(taskNumber => taskNumber !== '')
+        .filter(taskNumber => !!taskNumber);
+
+    return taskNumbers[0] || null;
 }
 
 function getTaskTitle() {
-    const taskTitleFromQuerySelector = () => document.querySelector('#summary-val')?.innerText
-    const taskTitleFromH1Tag = () => document.getElementsByTagName('h1')?.[0].innerText
+    const taskTitleFromQuerySelector = document.querySelector('#summary-val');
+    const taskTitleFromDataAtr = document.querySelector('[data-testid="issue.views.issue-base.foundation.summary.heading"]');
+    const taskTitleFromH1Tag = document.querySelector('h1');
 
-    const taskTitles = [taskTitleFromQuerySelector, taskTitleFromH1Tag]
-        .map(fn => fn())
-        .map(taskTitle => taskTitle?.trim())
-    return taskTitles.find(taskTitle => taskTitle !== '')
+    const taskTitles = [taskTitleFromQuerySelector, taskTitleFromDataAtr, taskTitleFromH1Tag]
+        .map(taskTitle => taskTitle?.innerText?.trim())
+        .filter(taskTitle => !!taskTitle);
+
+    return taskTitles[0] || null;
 }
