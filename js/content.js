@@ -35,7 +35,7 @@ function getTaskNumber() {
 
 function getTaskTitle() {
     const taskTitleFromQuerySelector = () => document.querySelector('#summary-val').innerText
-    const taskTitleFromH1Tag = () => ''//TODO
+    const taskTitleFromH1Tag = () => document.getElementsByTagName('h1')[0]?.innerText
 
     const taskTitles = [taskTitleFromQuerySelector, taskTitleFromH1Tag]
         .map(fn => fn())
