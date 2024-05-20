@@ -23,13 +23,13 @@ function getTaskNumber() {
     const taskNumberFromQuerySelector = document.querySelector('#key-val')?.innerText;
 
     const regex = /\/browse\/([A-Z]+-\d+)/;
-    const taskNumberFromPath = window.location.href.match(regex)?.[1] ?? null;
+    const taskNumberFromPath = window.location.href.match(regex)?.[1];
 
     const taskNumberFromQueryParams = new URL(window.location.href).searchParams.get('selectedIssue');
 
     const taskNumbers = [taskNumberFromQuerySelector, taskNumberFromPath, taskNumberFromQueryParams]
         .map(taskNumber => taskNumber?.trim())
-        .filter(taskNumber => taskNumber);
+        .filter(taskNumber => !!taskNumber);
 
     return taskNumbers[0] || null;
 }
