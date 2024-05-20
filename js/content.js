@@ -23,8 +23,7 @@ function getTaskNumber() {
     const taskNumberFromQuerySelector = document.querySelector('#key-val')?.innerText;
 
     const regex = /\/browse\/([A-Z]+-\d+)/;
-    const match = window.location.href.match(regex);
-    const taskNumberFromPath = match ? match[1] : null;
+    const taskNumberFromPath = window.location.href.match(regex)?.[1] ?? null;
 
     const taskNumberFromQueryParams = new URL(window.location.href).searchParams.get('selectedIssue');
 
