@@ -3,32 +3,31 @@ notificationBlock.id = 'jtclipper-noti-block'
 document.body.appendChild(notificationBlock);
 
 document.addEventListener('keydown', function (event) {
-        if ((event.ctrlKey || event.metaKey) && event.code === 'KeyC') {
-            if (!window.getSelection() || window.getSelection().toString().length === 0) {
+    if ((event.ctrlKey || event.metaKey) && event.code === 'KeyC') {
+        if (!window.getSelection() || window.getSelection().toString().length === 0) {
 
-                const taskNumber = getTaskNumber()
-                const taskTitle = getTaskTitle()
+            const taskNumber = getTaskNumber()
+            const taskTitle = getTaskTitle()
 
-                const res = [taskNumber, taskTitle].join(' ')
-                if (res.trim() !== '') {
-                    navigator.clipboard.writeText(res)
+            const res = [taskNumber, taskTitle].join(' ')
+            if (res.trim() !== '') {
+                navigator.clipboard.writeText(res)
                     .then(function () {
                         console.log(`Task information successfully copied to clipboard with text: ${res}`);
                         notificationBlock.textContent = `Copied to clipboard: ${res}`;
                         notificationBlock.style.display = 'block';
 
-                        setTimeout(()=> {
+                        setTimeout(() => {
                             notificationBlock.style.display = 'none';
                         }, 3000)
                     })
                     .catch(function (err) {
                         console.error('Error copying task information: ', err)
                     })
-                }
             }
         }
     }
-)
+})
 
 function getTaskNumber() {
     const taskNumberFromQuerySelector = document.querySelector('#key-val')?.innerText;
