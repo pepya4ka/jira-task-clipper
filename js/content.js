@@ -14,7 +14,7 @@ document.addEventListener('keydown', function (event) {
                 navigator.clipboard.writeText(res)
                     .then(function () {
                         console.log(`Task information successfully copied to clipboard with text: ${res}`);
-                        notificationBlock.textContent = `Copied to clipboard: ${res}`;
+                        notificationBlock.innerHTML = `Copied to clipboard:<br/>${res}`;
                         notificationBlock.style.display = 'block';
 
                         setTimeout(() => {
